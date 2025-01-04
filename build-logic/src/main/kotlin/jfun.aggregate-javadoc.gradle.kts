@@ -33,7 +33,7 @@ tasks {
                 .links(*JavadocAggregator.javadocLinks.toTypedArray())
 
             opts.addStringOption("Xmaxwarns", Int.MAX_VALUE.toString())
-            opts.addStringOption("-add-modules", "org.jetbrains.annotations,org.jspecify")
+            opts.addStringOption("-add-modules", "org.jetbrains.annotations,org.jspecify,org.junit.jupiter.api")
         }
     }
 }

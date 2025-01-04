@@ -15,23 +15,9 @@
  *
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-}
-
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version ("0.9.0")
-}
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-rootProject.name = "jfun"
-
-sequenceOf(
-    "result",
-    "result-assertion"
-).forEach {
-val projectName = "${rootProject.name}-$it"
-    include(projectName)
-    project(":$projectName").projectDir = file(it)
-}
+/**
+ * The package contains {@link dev.siroshun.jfun.result.Result} types.
+ * <p>
+ * This package is designed and implemented with reference to the <a href="https://doc.rust-lang.org/std/result/enum.Result.html">Rust's Result type</a>.
+ */
+package dev.siroshun.jfun.result;
