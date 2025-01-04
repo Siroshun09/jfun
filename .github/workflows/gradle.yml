@@ -7,3 +7,4 @@ jobs:
     with:
       java-version: '21'
       upload-artifacts: false
+      upload-test-results: true
