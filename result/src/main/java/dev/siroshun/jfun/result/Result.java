@@ -281,6 +281,28 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
     E unwrapError() throws NoSuchElementException;
 
     /**
+     * Casts this result to {@link Result.Success}.
+     * <p>
+     * If this {@link Result} is {@link Failure}, this method throws a {@link ClassCastException}.
+     *
+     * @param <E2> the arbitrary error type
+     * @return the same instance of this {@link Result}
+     * @throws ClassCastException if this {@link Result} is {@link Failure}
+     */
+    <E2> Result.@NonNull Success<T, E2> asSuccess();
+
+    /**
+     * Casts this result to {@link Result.Failure}.
+     * <p>
+     * If this {@link Result} is {@link Success}, this method throws a {@link ClassCastException}.
+     *
+     * @param <U> the arbitrary value type
+     * @return the same instance of this {@link Result}
+     * @throws ClassCastException if this {@link Result} is {@link Success}
+     */
+    <U> Result.@NonNull Failure<U, E> asFailure();
+
+    /**
      * An interface that represents the success {@link Result}.
      *
      * @param <T> the type of the success value

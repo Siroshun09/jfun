@@ -130,9 +130,19 @@ record SuccessImpl<T, E>(@Nullable T value) implements Result.Success<T, E> {
         throw new NoSuchElementException("Result.Success cannot unwrap error.");
     }
 
+    @Override
+    public <E2> Result.@NonNull Success<T, E2> asSuccess() {
+        return this.castError();
+    }
+
+    @Override
+    public <U> Result.@NonNull Failure<U, E> asFailure() {
+        throw new ClassCastException("Result.Success cannot cast to Result.Failure.");
+    }
+
     @SuppressWarnings("unchecked")
     @Contract("-> this")
-    private <E2> Result<T, E2> castError() {
-        return (Result<T, E2>) this;
+    private <E2> Result.@NonNull Success<T, E2> castError() {
+        return (Result.Success<T, E2>) this;
     }
 }

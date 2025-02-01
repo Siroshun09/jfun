@@ -129,9 +129,19 @@ record FailureImpl<T, E>(@Nullable E e) implements Result.Failure<T, E> {
         return this.e;
     }
 
+    @Override
+    public <E2> Result.@NonNull Success<T, E2> asSuccess() {
+        throw new ClassCastException("Result.Failure cannot cast to Result.Success.");
+    }
+
+    @Override
+    public <U> Result.@NonNull Failure<U, E> asFailure() {
+        return this.cast();
+    }
+
     @SuppressWarnings("unchecked")
     @Contract("-> this")
-    private <U> @NonNull Result<U, E> cast() {
-        return (Result<U, E>) this;
+    private <U> Result.@NonNull Failure<U, E> cast() {
+        return (Result.Failure<U, E>) this;
     }
 }
