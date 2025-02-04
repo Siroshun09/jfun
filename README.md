@@ -1,6 +1,6 @@
 # jfun
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Siroshun09/jfun/gradle.yml?branch=v5.x.x)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Siroshun09/jfun/gradle.yml)
 ![License](https://img.shields.io/github/license/Siroshun09/jfun)
 
 A library to assist functional programming in Java.
