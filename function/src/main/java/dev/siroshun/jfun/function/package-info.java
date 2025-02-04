@@ -15,24 +15,7 @@
  *
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-}
-
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version ("0.9.0")
-}
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-rootProject.name = "jfun"
-
-sequenceOf(
-    "function",
-    "result",
-    "result-assertion"
-).forEach {
-val projectName = "${rootProject.name}-$it"
-    include(projectName)
-    project(":$projectName").projectDir = file(it)
-}
+/**
+ * A package of function interfaces that have 3-10 arguments.
+ */
+package dev.siroshun.jfun.function;

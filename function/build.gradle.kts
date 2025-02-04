@@ -15,24 +15,11 @@
  *
  */
 
-pluginManagement {
-    includeBuild("build-logic")
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version ("0.9.0")
+    id("jfun.common-conventions")
+    id("jfun.publication")
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-rootProject.name = "jfun"
-
-sequenceOf(
-    "function",
-    "result",
-    "result-assertion"
-).forEach {
-val projectName = "${rootProject.name}-$it"
-    include(projectName)
-    project(":$projectName").projectDir = file(it)
+afterEvaluate {
+    aggregator.JavadocAggregator.addProject(this)
 }
