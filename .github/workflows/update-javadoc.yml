@@ -4,6 +4,9 @@ on:
   release:
     types: [ published ]
 
+permissions:
+  contents: write
+
 jobs:
   generate-javadoc:
     uses: Siroshun09/gh-actions-workflows/.github/workflows/gradle-generate-javadoc.yml@v1
