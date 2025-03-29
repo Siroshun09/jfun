@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"dev.siroshun.jfun.function"},{"l":"dev.siroshun.jfun.result"},{"l":"dev.siroshun.jfun.result.assertion"}];updateSearchResults();
