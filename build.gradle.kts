@@ -24,4 +24,33 @@ tasks {
         group = "build"
         layout.buildDirectory.get().asFile.deleteRecursively()
     }
+    register("createArtifactZipForMavenCentral") {
+        dependsOn(
+            subprojects.mapNotNull { it.tasks.findByName("publish") }
+        )
+        group = "publishing"
+
+        val staging = layout.buildDirectory.get().asFile.resolve("staging")
+
+        if (!staging.exists()) {
+            error("staging directory not found")
+        }
+
+        val outputFile = layout.buildDirectory.get().asFile.resolve("artifacts-${project.name}-${project.version}.zip")
+        if (outputFile.exists()) {
+            outputFile.delete()
+        }
+
+        val stagingPath = staging.toPath()
+        java.util.zip.ZipOutputStream(outputFile.outputStream()).use { zipOut ->
+            staging.walk().forEach { file ->
+                if (!file.isDirectory) {
+                    val zipEntry = java.util.zip.ZipEntry(stagingPath.relativize(file.toPath()).toString())
+                    zipOut.putNextEntry(zipEntry)
+                    file.inputStream().use { it.copyTo(zipOut) }
+                    zipOut.closeEntry()
+                }
+            }
+        }
+    }
 }
