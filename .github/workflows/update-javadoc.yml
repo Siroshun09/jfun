@@ -1,6 +1,5 @@
 name: Deploy Javadoc to GitHub Pages
 on:
-  push:
   release:
     types: [ published ]
 
