@@ -16,48 +16,33 @@
  */
 
 plugins {
-    id("jfun.aggregate-javadoc")
+    alias(libs.plugins.jcommon)
+    alias(libs.plugins.aggregated.javadoc)
+    alias(libs.plugins.mavenPublication)
+    alias(libs.plugins.mavenCentralPortal)
 }
 
-tasks {
-    register<Delete>("clean") {
-        group = "build"
-        doLast {
-            layout.buildDirectory.get().asFile.deleteRecursively()
-        }
+jcommon {
+    javaVersion = JavaVersion.VERSION_21
+
+    commonDependencies {
+        compileOnlyApi(libs.annotations)
+        compileOnlyApi(libs.jspecify)
+
+        testImplementation(platform(libs.junit.bom))
+        testImplementation(libs.junit.jupiter)
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     }
-    register("createArtifactZipForMavenCentral") {
-        dependsOn("clean")
-        dependsOn(
-            subprojects.mapNotNull { it.tasks.findByName("publish") }
-        )
+}
 
-        group = "publishing"
-        val staging = layout.buildDirectory.get().asFile.resolve("staging")
-        val outputFile = layout.buildDirectory.get().asFile.resolve("artifacts-${project.name}-${project.version}.zip")
+aggregatedJavadoc {
+    modules = listOf("org.jetbrains.annotations", "org.jspecify", "org.junit.jupiter.api")
+}
 
-        doLast {
-
-
-            if (!staging.exists()) {
-                error("staging directory not found")
-            }
-
-            if (outputFile.exists()) {
-                outputFile.delete()
-            }
-
-            val stagingPath = staging.toPath()
-            java.util.zip.ZipOutputStream(outputFile.outputStream()).use { zipOut ->
-                staging.walk().forEach { file ->
-                    if (!file.isDirectory) {
-                        val zipEntry = java.util.zip.ZipEntry(stagingPath.relativize(file.toPath()).toString())
-                        zipOut.putNextEntry(zipEntry)
-                        file.inputStream().use { it.copyTo(zipOut) }
-                        zipOut.closeEntry()
-                    }
-                }
-            }
-        }
-    }
+mavenPublication {
+    localRepository(mavenCentralPortal.stagingDirectory)
+    description("A library to assist functional programming in Java.")
+    apacheLicense()
+    developer("Siroshun09")
+    github("Siroshun09/jfun")
 }

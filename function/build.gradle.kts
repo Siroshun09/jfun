@@ -16,10 +16,6 @@
  */
 
 plugins {
-    id("jfun.common-conventions")
-    id("jfun.publication")
-}
-
-afterEvaluate {
-    aggregator.JavadocAggregator.addProject(this)
+    alias(libs.plugins.aggregated.javadoc.collector)
+    alias(libs.plugins.mavenPublication)
 }

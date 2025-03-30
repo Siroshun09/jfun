@@ -16,8 +16,8 @@
  */
 
 plugins {
-    id("jfun.common-conventions")
-    id("jfun.publication")
+    alias(libs.plugins.aggregated.javadoc.collector)
+    alias(libs.plugins.mavenPublication)
 }
 
 dependencies {
@@ -25,6 +25,6 @@ dependencies {
     api(libs.junit.jupiter)
 }
 
-afterEvaluate {
-    aggregator.JavadocAggregator.addProject(this)
+tasks {
+    publish
 }
