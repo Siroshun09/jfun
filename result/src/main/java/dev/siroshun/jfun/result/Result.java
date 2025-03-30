@@ -17,9 +17,8 @@
 
 package dev.siroshun.jfun.result;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.NullUnmarked;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -33,7 +32,6 @@ import java.util.function.Supplier;
  * @param <T> the type of the success value
  * @param <E> the type of the error value
  */
-@NullUnmarked
 public sealed interface Result<T, E> permits Result.Success, Result.Failure {
 
     /**
@@ -47,7 +45,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <E> the type of the error value
      * @return a {@link Success} without value
      */
-    static <T, E> Result.@NonNull Success<T, E> success() {
+    static <T, E> Result.@NotNull Success<T, E> success() {
         return SuccessImpl.nullSuccess();
     }
 
@@ -61,7 +59,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <E>   the type of the error value
      * @return a {@link Success} the specified value
      */
-    static <T, E> Result.@NonNull Success<T, E> success(@Nullable T value) {
+    static <T, E> Result.@NotNull Success<T, E> success(@Nullable T value) {
         return value != null ? new SuccessImpl<>(value) : SuccessImpl.nullSuccess();
     }
 
@@ -76,7 +74,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <E> the type of the error value
      * @return a {@link Failure} without value
      */
-    static <T, E> Result.@NonNull Failure<T, E> failure() {
+    static <T, E> Result.@NotNull Failure<T, E> failure() {
         return FailureImpl.nullFailure();
     }
 
@@ -90,7 +88,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <E> the type of the error value
      * @return a {@link Failure} the specified value
      */
-    static <T, E> Result.@NonNull Failure<T, E> failure(@Nullable E e) {
+    static <T, E> Result.@NotNull Failure<T, E> failure(@Nullable E e) {
         return e != null ? new FailureImpl<>(e) : FailureImpl.nullFailure();
     }
 
@@ -116,8 +114,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      *
      * @return the value wrapped by the {@link Optional}
      */
-    @NonNull
-    Optional<T> toOptional();
+    @NotNull Optional<T> toOptional();
 
     /**
      * Returns the error wrapped by the {@link Optional}.
@@ -127,8 +124,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      *
      * @return the error wrapped by the {@link Optional}
      */
-    @NonNull
-    Optional<E> toOptionalError();
+    @NotNull Optional<E> toOptionalError();
 
     /**
      * Maps the value from {@link T} to {@link U} using the specified {@link Function}.
@@ -139,8 +135,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <U>    the new type of the success value
      * @return the new {@link Success}, or same instance if this {@link Result} is {@link Failure}
      */
-    @NonNull
-    <U> Result<U, E> map(@NonNull Function<? super T, ? extends U> mapper);
+    <U> @NotNull Result<U, E> map(@NotNull Function<? super T, ? extends U> mapper);
 
     /**
      * Maps the value from {@link T} to {@link U} using the specified {@link Function}, or returns new {@link Success} with the default value  if this {@link Result} is {@link Failure}.
@@ -150,8 +145,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <U>          the new type of the success value
      * @return the new {@link Success} with mapped value, or {@code defaultValue} if this {@link Result} is {@link Failure}
      */
-    @NonNull
-    <U> Result<U, E> mapOr(@NonNull Function<? super T, ? extends U> mapper, U defaultValue);
+    <U> @NotNull Result<U, E> mapOr(@NotNull Function<? super T, ? extends U> mapper, U defaultValue);
 
     /**
      * Maps the value from {@link T} to {@link U} using the specified {@link Function},
@@ -162,8 +156,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <U>      the new type of the success value
      * @return the new {@link Success} with mapped value, or the value provided by {@code supplier} if this {@link Result} is {@link Failure}
      */
-    @NonNull
-    <U> Result<U, E> mapOrGet(@NonNull Function<? super T, ? extends U> mapper, @NonNull Supplier<? extends U> supplier);
+    <U> @NotNull Result<U, E> mapOrGet(@NotNull Function<? super T, ? extends U> mapper, @NotNull Supplier<? extends U> supplier);
 
     /**
      * Maps the value from {@link T} to {@link U} using the specified {@link Function},
@@ -174,8 +167,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <U>       the new type of the success value
      * @return the new {@link Success} with mapped value, or the value created by {@code onFailure} if this {@link Result} is {@link Failure}
      */
-    @NonNull
-    <U> Result<U, E> mapOrElse(@NonNull Function<? super T, ? extends U> mapper, @NonNull Function<? super E, ? extends U> onFailure);
+    <U> @NotNull Result<U, E> mapOrElse(@NotNull Function<? super T, ? extends U> mapper, @NotNull Function<? super E, ? extends U> onFailure);
 
     /**
      * Maps the error from {@link E} to {@link O} using the specified {@link Function}.
@@ -186,8 +178,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param <O>    the new type of the error value
      * @return the new {@link Failure}, or same instance if this {@link Result} is {@link Success}
      */
-    @NonNull
-    <O> Result<T, O> mapError(@NonNull Function<? super E, ? extends O> mapper);
+    <O> @NotNull Result<T, O> mapError(@NotNull Function<? super E, ? extends O> mapper);
 
     /**
      * Maps and flatten the {@link Result} using the specified {@link Function}.
@@ -199,8 +190,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @return the {@link Result} returned from {@link Function}
      * @throws NullPointerException if the {@link Function} returns {@code null} as {@link Result}
      */
-    @NonNull
-    <U, E2> Result<U, E2> flatMap(@NonNull Function<? super T, Result<U, E2>> onSuccess, @NonNull Function<? super E, Result<U, E2>> onFailure);
+    <U, E2> @NotNull Result<U, E2> flatMap(@NotNull Function<? super T, Result<U, E2>> onSuccess, @NotNull Function<? super E, Result<U, E2>> onFailure);
 
     /**
      * Calls the specified {@link Consumer} with the success value if this {@link Result} is {@link Success}.
@@ -208,8 +198,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param onSuccess the {@link Consumer} that accepts the success value
      * @return the same instance
      */
-    @NonNull
-    Result<T, E> inspect(@NonNull Consumer<? super T> onSuccess);
+    @NotNull Result<T, E> inspect(@NotNull Consumer<? super T> onSuccess);
 
     /**
      * Calls the specified {@link Consumer} with the error value if this {@link Result} is {@link Error}.
@@ -217,8 +206,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param onFailure the {@link Consumer} that accepts the error value
      * @return the same instance
      */
-    @NonNull
-    Result<T, E> inspectError(@NonNull Consumer<? super E> onFailure);
+    @NotNull Result<T, E> inspectError(@NotNull Consumer<? super E> onFailure);
 
     /**
      * Recovers the error and creates a new {@link Success} result.
@@ -228,8 +216,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param onFailure the {@link Function} recovers the error, and provides the success value
      * @return the new {@link Success}, or same instance if this {@link Result} is already {@link Success}
      */
-    @NonNull
-    Result<T, E> recover(@NonNull Function<? super E, ? extends T> onFailure);
+    @NotNull Result<T, E> recover(@NotNull Function<? super E, ? extends T> onFailure);
 
     /**
      * Tries recovering the error using the specified {@link Function}.
@@ -241,8 +228,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @return the new {@link Result} returned from {@link Function}, or same instance if this {@link Result} is {@link Success}
      * @throws NullPointerException if the {@link Function} returns {@code null} as {@link Result}
      */
-    @NonNull
-    <E2> Result<T, E2> tryRecover(@NonNull Function<? super E, Result<T, E2>> onFailure);
+    <E2> @NotNull Result<T, E2> tryRecover(@NotNull Function<? super E, Result<T, E2>> onFailure);
 
     /**
      * Unwraps the success value.
@@ -268,7 +254,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @param supplier the {@link Supplier} to get the alternative value of {@link T}
      * @return the success value, or the value supplied by the specified {@link Supplier} if this {@link Result} is {@link Failure}
      */
-    T unwrapOrGet(@NonNull Supplier<? extends T> supplier);
+    T unwrapOrGet(@NotNull Supplier<? extends T> supplier);
 
     /**
      * Unwraps the error value.
@@ -289,7 +275,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @return the same instance of this {@link Result}
      * @throws ClassCastException if this {@link Result} is {@link Failure}
      */
-    <E2> Result.@NonNull Success<T, E2> asSuccess();
+    <E2> Result.@NotNull Success<T, E2> asSuccess();
 
     /**
      * Casts this result to {@link Result.Failure}.
@@ -300,7 +286,7 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @return the same instance of this {@link Result}
      * @throws ClassCastException if this {@link Result} is {@link Success}
      */
-    <U> Result.@NonNull Failure<U, E> asFailure();
+    <U> Result.@NotNull Failure<U, E> asFailure();
 
     /**
      * An interface that represents the success {@link Result}.

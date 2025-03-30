@@ -3,7 +3,6 @@
  */
 module dev.siroshun.jfun.result.assertion {
     requires org.jetbrains.annotations;
-    requires org.jspecify;
     requires dev.siroshun.jfun.result;
     requires org.junit.jupiter.api;
 

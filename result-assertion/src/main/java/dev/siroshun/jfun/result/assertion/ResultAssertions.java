@@ -18,15 +18,13 @@
 package dev.siroshun.jfun.result.assertion;
 
 import dev.siroshun.jfun.result.Result;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.NullUnmarked;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.Assertions;
 
 /**
  * The class that provides methods for asserting {@link Result}s.
  */
-@NullUnmarked
 public final class ResultAssertions {
 
     /**
@@ -37,7 +35,7 @@ public final class ResultAssertions {
      * @return the unwrapped value using {@link Result#unwrap()}
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static <T> T assertSuccess(@NonNull Result<? extends T, ?> result) {
+    public static <T> T assertSuccess(@NotNull Result<? extends T, ?> result) {
         if (result.isSuccess()) {
             return result.unwrap();
         }
@@ -53,7 +51,7 @@ public final class ResultAssertions {
      * @return the unwrapped value using {@link Result#unwrap()}
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static <T> T assertSuccess(@NonNull Result<? extends T, ?> result, T expectedValue) {
+    public static <T> T assertSuccess(@NotNull Result<? extends T, ?> result, T expectedValue) {
         if (result.isSuccess()) {
             T actual = result.unwrap();
             Assertions.assertEquals(expectedValue, actual);
@@ -70,7 +68,7 @@ public final class ResultAssertions {
      * @return the unwrapped error value using {@link Result#unwrapError()}
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static <E> E assertFailure(@NonNull Result<?, ? extends E> result) {
+    public static <E> E assertFailure(@NotNull Result<?, ? extends E> result) {
         if (result.isFailure()) {
             return result.unwrapError();
         }
@@ -86,7 +84,7 @@ public final class ResultAssertions {
      * @return the unwrapped error value using {@link Result#unwrapError()}
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static <E> E assertFailure(@NonNull Result<?, ? extends E> result, E expectedError) {
+    public static <E> E assertFailure(@NotNull Result<?, ? extends E> result, E expectedError) {
         if (result.isFailure()) {
             E actual = result.unwrapError();
             Assertions.assertEquals(expectedError, actual);
@@ -95,7 +93,7 @@ public final class ResultAssertions {
         return fail(result, false);
     }
 
-    private static <T> T fail(@NonNull Result<?, ?> result, boolean expectedSuccess) {
+    private static <T> T fail(@NotNull Result<?, ?> result, boolean expectedSuccess) {
         AssertionFailureBuilder builder = AssertionFailureBuilder.assertionFailure();
 
         if (expectedSuccess) {

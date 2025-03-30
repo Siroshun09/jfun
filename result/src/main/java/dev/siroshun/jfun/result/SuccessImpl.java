@@ -18,8 +18,8 @@
 package dev.siroshun.jfun.result;
 
 import org.jetbrains.annotations.Contract;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -34,7 +34,7 @@ record SuccessImpl<T, E>(@Nullable T value) implements Result.Success<T, E> {
     private static final SuccessImpl INSTANCE = new SuccessImpl(null);
 
     @SuppressWarnings("unchecked")
-    static <T, E> SuccessImpl<T, E> nullSuccess() {
+    static <T, E> @NotNull SuccessImpl<T, E> nullSuccess() {
         return (SuccessImpl<T, E>) INSTANCE;
     }
 
@@ -49,64 +49,64 @@ record SuccessImpl<T, E>(@Nullable T value) implements Result.Success<T, E> {
     }
 
     @Override
-    public @NonNull Optional<T> toOptional() {
+    public @NotNull Optional<T> toOptional() {
         return Optional.ofNullable(this.value);
     }
 
     @Override
-    public @NonNull Optional<E> toOptionalError() {
+    public @NotNull Optional<E> toOptionalError() {
         return Optional.empty();
     }
 
     @Override
-    public @NonNull <U> Result<U, E> map(@NonNull Function<? super T, ? extends U> mapper) {
+    public @NotNull <U> Result<U, E> map(@NotNull Function<? super T, ? extends U> mapper) {
         U result = mapper.apply(this.value);
         return Result.success(result);
     }
 
     @Override
-    public @NonNull <U> Result<U, E> mapOr(@NonNull Function<? super T, ? extends U> mapper, U defaultValue) {
+    public @NotNull <U> Result<U, E> mapOr(@NotNull Function<? super T, ? extends U> mapper, U defaultValue) {
         return this.map(mapper);
     }
 
     @Override
-    public @NonNull <U> Result<U, E> mapOrGet(@NonNull Function<? super T, ? extends U> mapper, @NonNull Supplier<? extends U> supplier) {
+    public @NotNull <U> Result<U, E> mapOrGet(@NotNull Function<? super T, ? extends U> mapper, @NotNull Supplier<? extends U> supplier) {
         return this.map(mapper);
     }
 
     @Override
-    public @NonNull <U> Result<U, E> mapOrElse(@NonNull Function<? super T, ? extends U> mapper, @NonNull Function<? super E, ? extends U> onFailure) {
+    public @NotNull <U> Result<U, E> mapOrElse(@NotNull Function<? super T, ? extends U> mapper, @NotNull Function<? super E, ? extends U> onFailure) {
         return this.map(mapper);
     }
 
     @Override
-    public @NonNull <O> Result<T, O> mapError(@NonNull Function<? super E, ? extends O> mapper) {
+    public @NotNull <O> Result<T, O> mapError(@NotNull Function<? super E, ? extends O> mapper) {
         return this.castError();
     }
 
     @Override
-    public @NonNull <U, E2> Result<U, E2> flatMap(@NonNull Function<? super T, Result<U, E2>> onSuccess, @NonNull Function<? super E, Result<U, E2>> onFailure) {
+    public @NotNull <U, E2> Result<U, E2> flatMap(@NotNull Function<? super T, Result<U, E2>> onSuccess, @NotNull Function<? super E, Result<U, E2>> onFailure) {
         return Objects.requireNonNull(onSuccess.apply(this.value));
     }
 
     @Override
-    public @NonNull Result<T, E> inspect(@NonNull Consumer<? super T> onSuccess) {
+    public @NotNull Result<T, E> inspect(@NotNull Consumer<? super T> onSuccess) {
         onSuccess.accept(this.value);
         return this;
     }
 
     @Override
-    public @NonNull Result<T, E> inspectError(@NonNull Consumer<? super E> onFailure) {
+    public @NotNull Result<T, E> inspectError(@NotNull Consumer<? super E> onFailure) {
         return this;
     }
 
     @Override
-    public @NonNull Result<T, E> recover(@NonNull Function<? super E, ? extends T> onFailure) {
+    public @NotNull Result<T, E> recover(@NotNull Function<? super E, ? extends T> onFailure) {
         return this;
     }
 
     @Override
-    public @NonNull <E2> Result<T, E2> tryRecover(@NonNull Function<? super E, Result<T, E2>> onFailure) {
+    public @NotNull <E2> Result<T, E2> tryRecover(@NotNull Function<? super E, Result<T, E2>> onFailure) {
         return this.castError();
     }
 
@@ -121,7 +121,7 @@ record SuccessImpl<T, E>(@Nullable T value) implements Result.Success<T, E> {
     }
 
     @Override
-    public T unwrapOrGet(@NonNull Supplier<? extends T> supplier) {
+    public T unwrapOrGet(@NotNull Supplier<? extends T> supplier) {
         return this.unwrap();
     }
 
@@ -131,18 +131,18 @@ record SuccessImpl<T, E>(@Nullable T value) implements Result.Success<T, E> {
     }
 
     @Override
-    public <E2> Result.@NonNull Success<T, E2> asSuccess() {
+    public <E2> Result.@NotNull Success<T, E2> asSuccess() {
         return this.castError();
     }
 
     @Override
-    public <U> Result.@NonNull Failure<U, E> asFailure() {
+    public <U> Result.@NotNull Failure<U, E> asFailure() {
         throw new ClassCastException("Result.Success cannot cast to Result.Failure.");
     }
 
     @SuppressWarnings("unchecked")
     @Contract("-> this")
-    private <E2> Result.@NonNull Success<T, E2> castError() {
+    private <E2> Result.@NotNull Success<T, E2> castError() {
         return (Result.Success<T, E2>) this;
     }
 }
