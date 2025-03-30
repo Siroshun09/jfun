@@ -24,7 +24,3 @@ dependencies {
     api(projects.jfunResult)
     api(libs.junit.jupiter)
 }
-
-tasks {
-    publish
-}
