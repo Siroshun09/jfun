@@ -181,6 +181,16 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
     <O> @NotNull Result<T, O> mapError(@NotNull Function<? super E, ? extends O> mapper);
 
     /**
+     * Maps and flatten the {@link Result} using the specified {@link Function} when this {@link Result} is {@link Success}.
+     *
+     * @param onSuccess the {@link Function} processes the success value, then returns new {@link Result}
+     * @param <U>       the new type of the success value
+     * @return the {@link Result} returned from {@link Function}
+     * @throws NullPointerException if the {@link Function} returns {@code null} as {@link Result}
+     */
+    <U> @NotNull Result<U, E> flatMap(@NotNull Function<? super T, Result<U, E>> onSuccess);
+
+    /**
      * Maps and flatten the {@link Result} using the specified {@link Function}.
      *
      * @param onSuccess the {@link Function} processes the success value, then returns new {@link Result}
@@ -191,6 +201,16 @@ public sealed interface Result<T, E> permits Result.Success, Result.Failure {
      * @throws NullPointerException if the {@link Function} returns {@code null} as {@link Result}
      */
     <U, E2> @NotNull Result<U, E2> flatMap(@NotNull Function<? super T, Result<U, E2>> onSuccess, @NotNull Function<? super E, Result<U, E2>> onFailure);
+
+    /**
+     * Maps and flatten the {@link Result} using the specified {@link Function} when this {@link Result} is {@link Failure}.
+     *
+     * @param onFailure the {@link Function} processes the error value, then returns new {@link Result}
+     * @param <E2>      the new type of the error value
+     * @return the {@link Result} returned from {@link Function}
+     * @throws NullPointerException if the {@link Function} returns {@code null} as {@link Result}
+     */
+    <E2> @NotNull Result<T, E2> flatMapError(@NotNull Function<? super E, Result<T, E2>> onFailure);
 
     /**
      * Calls the specified {@link Consumer} with the success value if this {@link Result} is {@link Success}.

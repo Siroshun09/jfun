@@ -54,12 +54,17 @@ class FlatMapTest {
         Result<?, ?> result = testCase.result();
         switch (testCase) {
             case SuccessTestCase successTestCase:
+                ResultAssertions.assertSuccess(result.flatMap(calledFunction(successTestCase.want(), Result.success("flatMap"))), "flatMap");
                 ResultAssertions.assertSuccess(result.flatMap(calledFunction(successTestCase.want(), Result.success("flatMap")), notCalledFunction()), "flatMap");
                 ResultAssertions.assertFailure(result.flatMap(calledFunction(successTestCase.want(), Result.failure("flatMap")), notCalledFunction()), "flatMap");
+                ResultAssertions.assertSuccess(result.flatMapError(notCalledFunction()), successTestCase.want());
                 return;
             case FailureTestCase failureTestCase:
+                ResultAssertions.assertFailure(result.flatMap(notCalledFunction()), failureTestCase.want());
                 ResultAssertions.assertSuccess(result.flatMap(notCalledFunction(), calledFunction(failureTestCase.want(), Result.success("flatMap"))), "flatMap");
                 ResultAssertions.assertFailure(result.flatMap(notCalledFunction(), calledFunction(failureTestCase.want(), Result.failure("flatMap"))), "flatMap");
+                ResultAssertions.assertSuccess(result.flatMapError(calledFunction(failureTestCase.want(), Result.success())));
+                ResultAssertions.assertFailure(result.flatMapError(calledFunction(failureTestCase.want(), Result.failure("flatMapError"))), "flatMapError");
                 return;
             default:
                 Assertions.fail(testCase + " failed");

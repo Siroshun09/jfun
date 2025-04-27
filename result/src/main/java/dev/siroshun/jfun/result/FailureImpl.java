@@ -84,7 +84,17 @@ record FailureImpl<T, E>(@Nullable E e) implements Result.Failure<T, E> {
     }
 
     @Override
+    public @NotNull <U> Result<U, E> flatMap(@NotNull Function<? super T, Result<U, E>> onSuccess) {
+        return this.cast();
+    }
+
+    @Override
     public @NotNull <U, E2> Result<U, E2> flatMap(@NotNull Function<? super T, Result<U, E2>> onSuccess, @NotNull Function<? super E, Result<U, E2>> onFailure) {
+        return Objects.requireNonNull(onFailure.apply(this.e));
+    }
+
+    @Override
+    public @NotNull <E2> Result<T, E2> flatMapError(@NotNull Function<? super E, Result<T, E2>> onFailure) {
         return Objects.requireNonNull(onFailure.apply(this.e));
     }
 
